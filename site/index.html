@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Screening</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1d2320;--mute:#5d665f;--line:#dcdad2;--accent:#1f6f5c;
+--apply:#1f7a4d;--apply-bg:#e3f3ea;--stretch:#8a5a00;--stretch-bg:#fbefd2;--skip:#6b6b6b;--skip-bg:#ececec;
+--block:#a3261f;--block-bg:#fbe3e1;--mod:#8a5a00;--minor:#5d665f}
+@media (prefers-color-scheme:dark){:root{--bg:#161a18;--card:#1f2523;--ink:#e8ece9;--mute:#9aa59d;--line:#333c38;--accent:#5fc4a5;
+--apply:#6fd49c;--apply-bg:#1b3a2a;--stretch:#f0c364;--stretch-bg:#3a2f12;--skip:#a8a8a8;--skip-bg:#2c2c2c;
+--block:#f08a84;--block-bg:#41201e;--mod:#f0c364;--minor:#9aa59d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:8px 0 2px}
+.sub{color:var(--mute);font-size:.9rem;margin:0 0 14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.filters button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:.9rem;cursor:pointer;min-height:36px}
+.filters button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+.top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.title{font-weight:650;font-size:1.05rem;margin:0}
+.co{color:var(--mute);font-size:.9rem;margin:2px 0 0}
+.chip{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:650;white-space:nowrap}
+.apply{background:var(--apply-bg);color:var(--apply)}.stretch{background:var(--stretch-bg);color:var(--stretch)}.skip{background:var(--skip-bg);color:var(--skip)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;font-size:.82rem;color:var(--mute)}
+.meta span{border:1px solid var(--line);border-radius:6px;padding:1px 8px}
+.one{margin:6px 0}
+details{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;font-weight:600;color:var(--accent);min-height:32px}
+h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:14px 0 4px}
+ul{margin:4px 0;padding-left:20px}li{margin:4px 0}
+.sev{font-size:.75rem;font-weight:700;text-transform:uppercase;margin-right:6px}
+.sev.blocker{color:var(--block)}.sev.moderate{color:var(--mod)}.sev.minor{color:var(--minor)}
+.note{font-size:.88rem;color:var(--mute)}
+.elig{border-radius:8px;padding:8px 10px;font-size:.88rem;margin-top:8px;background:var(--skip-bg)}
+.elig.blocked{background:var(--block-bg);color:var(--block)}
+a.apply-link{display:inline-block;margin-top:10px;background:var(--accent);color:#fff;text-decoration:none;border-radius:8px;padding:9px 16px;font-weight:650;min-height:40px}
+.srctag{font-weight:700;color:#fff!important;border-color:transparent!important}
+.srctag[data-src=linkedin]{background:#0a66c2}.srctag[data-src=indeed]{background:#2557a7}.srctag[data-src=company]{background:#1f6f5c}.srctag[data-src=himalayas]{background:#7a4fb5}.srctag[data-src=jobsdb]{background:#c2541a}
+.why{margin:4px 0;padding-left:18px;font-size:.88rem;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{border:1px solid var(--accent);background:var(--card);color:var(--accent);border-radius:8px;padding:9px 14px;font:inherit;font-weight:650;min-height:40px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.primary{background:var(--accent);color:#fff}.btn[disabled]{opacity:.5;cursor:default}
+.status{font-size:.88rem;margin-top:8px;color:var(--mute)}.status.err{color:var(--block)}
+.jd{white-space:pre-wrap;font-size:.9rem;max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:10px;margin:6px 0}
+.mark{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mark button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 12px;font:inherit;font-size:.9rem;min-height:40px;cursor:pointer}
+.mark button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tag{font-size:.78rem;font-weight:650;border-radius:6px;padding:1px 8px;margin-left:6px;background:var(--stretch-bg);color:var(--stretch)}
+.empty{color:var(--mute);text-align:center;padding:30px 0}
+footer{color:var(--mute);font-size:.8rem;margin:24px 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>Job screening</h1>
+  <p class="sub" id="sub">Loading…</p>
+  <div class="filters" id="filters" role="group" aria-label="Filters"></div>
+  <div id="list"></div>
+  <footer>Screened against your master resume. Drafts only: you review and submit every application yourself. Check eligibility on the posting before applying. Some listings come from <a href="https://himalayas.app" target="_blank" rel="noopener noreferrer">Himalayas</a>, and their links lead to the employer's page there.</footer>
+</main>
+<script>
+(function(){
+  var base = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
+  var state = {market:'all', verdict:'all', view:'review', src:'all'};
+  var SRC = {linkedin:'LinkedIn', indeed:'Indeed', jobsdb:'JobsDB', himalayas:'Himalayas', company:'Company site'};
+  var data = {jobs:[]};
+  var HDR = {'X-Jobs':'1'};
+
+  function post(path){return fetch(base+path,{method:'POST',headers:HDR}).then(function(r){return r.json().then(function(b){b._ok=r.ok; return b;});});}
+
+  function track(box, runId, kind){
+    var t0 = Date.now();
+    box.className='status'; box.textContent='Working… this takes a few minutes. You can leave this page open.';
+    (function poll(){
+      fetch(base+'api/run?run='+encodeURIComponent(runId),{cache:'no-store'}).then(function(r){return r.json();}).then(function(s){
+        if(s.state==='running'){
+          box.textContent='Working… '+Math.round((Date.now()-t0)/1000)+'s (a resume usually takes 2-5 minutes)';
+          setTimeout(poll,5000);
+        } else if(s.state==='done'){ load(); }
+        else { box.className='status err'; box.textContent=s.error||'The run failed.'; }
+      }).catch(function(){setTimeout(poll,8000);});
+    })();
+  }
+
+  function mark(j, status){
+    post('api/mark?id='+j.id+'&status='+status).then(function(b){
+      if(b.ok){ j.decision = b.decision || null; buildFilters(); render(); }
+      else alert(b.error||'Could not save.');
+    });
+  }
+
+  function actions(c, j){
+    var box = el('div','status');
+    var row = el('div','btns');
+    var files = (j.gen && j.gen.files) || [];
+    var names = {'resume.pdf':'Resume PDF','resume.docx':'Resume Word','cover_letter.pdf':'Cover letter PDF','cover_letter.docx':'Cover letter Word'};
+    function start(path, msg){
+      if(!confirm(msg)) return;
+      row.querySelectorAll('button').forEach(function(b){b.disabled=true;});
+      post(path).then(function(b){
+        if(b.run){ track(box, b.run); }
+        else { box.className='status err'; box.textContent=b.error||'Could not start.'; row.querySelectorAll('button').forEach(function(x){x.disabled=false;}); }
+      });
+    }
+    if(j.gen){
+      ['resume.pdf','resume.docx','cover_letter.pdf','cover_letter.docx'].forEach(function(f){
+        if(files.indexOf(f)<0) return;
+        var a = el('a','btn'+(f==='resume.pdf'?' primary':''), names[f]);
+        a.href = base+'api/file?id='+j.id+'&file='+f; a.target='_blank'; a.rel='noopener noreferrer'; row.appendChild(a);
+      });
+      if(files.indexOf('cover_letter.pdf')<0){
+        var cb = el('button','btn','Add cover letter'); cb.type='button';
+        cb.onclick=function(){start('api/cover?id='+j.id,'Add a cover letter to this resume? It uses the cheaper (fast) model, but each run still costs money.');};
+        row.appendChild(cb);
+      }
+      box.textContent='Draft made '+(j.gen.at||'')+'. Review it before you apply.';
+    } else if(j.has_jd){
+      var r1 = el('button','btn primary','Resume (fast)'); r1.type='button';
+      r1.onclick=function(){start('api/generate?id='+j.id,'Make a tailored resume for this job with the cheaper (fast) model? Each run costs money and takes a few minutes.');};
+      var r2 = el('button','btn','Resume + cover letter'); r2.type='button';
+      r2.onclick=function(){start('api/generate?id='+j.id+'&cover=1','Make a resume AND cover letter with the cheaper (fast) model? Each run costs money and takes a few minutes.');};
+      row.appendChild(r1); row.appendChild(r2);
+    } else {
+      box.textContent='No full job description yet, so the resume buttons are off. Ask Claude to find the company posting, or paste the text.';
+    }
+    c.appendChild(row); c.appendChild(box);
+  }
+
+  function jdSection(d, j){
+    if(!j.has_jd) return;
+    var det = el('details'); det.appendChild(el('summary',null,'Job description'));
+    var pre = el('div','jd','Loading…'); det.appendChild(pre);
+    var loaded = false;
+    det.addEventListener('toggle', function(){
+      if(!det.open || loaded) return; loaded = true;
+      fetch(base+'api/jd?id='+j.id,{cache:'no-store'}).then(function(r){return r.json();}).then(function(x){
+        pre.textContent = x.text || 'Not available.';
+        var u = safeUrl(x.source);
+        if(u){var a=el('a',null,'Source: '+(new URL(u)).hostname); a.href=u; a.target='_blank'; a.rel='noopener noreferrer'; det.appendChild(a);}
+      }).catch(function(){pre.textContent='Could not load.';});
+    });
+    d.appendChild(det);
+  }
+
+  function el(tag, cls, text){var e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e;}
+  function safeUrl(u){return typeof u==='string' && /^https:\/\//i.test(u) ? u : null;}
+
+  function listSection(card, label, items, build){
+    if(!items || !items.length) return;
+    card.appendChild(el('h3', null, label));
+    var ul = el('ul'); items.forEach(function(i){ul.appendChild(build(i));}); card.appendChild(ul);
+  }
+
+  function render(){
+    var list = document.getElementById('list'); list.textContent='';
+    var jobs = data.jobs.filter(function(j){
+      var dec = j.decision && j.decision.status;
+      var inView = state.view==='excluded' ? !!j.excluded : j.excluded ? false : state.view==='all' ? true : state.view==='review' ? !dec : dec===state.view;
+      return inView && (state.market==='all'||j.market===state.market) && (state.verdict==='all'||j.verdict===state.verdict) && (state.src==='all'||j.src===state.src);
+    });
+    if(!jobs.length){list.appendChild(el('p','empty','No jobs match these filters.')); return;}
+    jobs.forEach(function(j){
+      var c = el('article','card');
+      var top = el('div','top'); var left = el('div');
+      left.appendChild(el('p','title', j.title||''));
+      left.appendChild(el('p','co', (j.company||'') + (j.location ? ' · ' + j.location : '')));
+      top.appendChild(left);
+      var chip = el('span','chip '+(j.verdict||'skip'), ((j.verdict||'').toUpperCase()) + (j.grade ? ' · ' + j.grade : ''));
+      top.appendChild(chip); c.appendChild(top);
+
+      var meta = el('div','meta');
+      if(j.src){ var st = el('span','srctag', SRC[j.src]||j.src); st.setAttribute('data-src', j.src); meta.appendChild(st); }
+      [j.market, j.title_only && 'title only', j.open_status==='listed' && 'still listed', j.open_status==='unverified' && 'open? check posting', j.profile && ('profile: '+j.profile), j.tailor_with && ('tailor: '+j.tailor_with), j.posted && ('posted '+j.posted)]
+        .filter(Boolean).forEach(function(t){meta.appendChild(el('span',null,t));});
+      c.appendChild(meta);
+      c.appendChild(el('p','one', j.one_line||''));
+      if(j.why){ var w = el('ul','why'); [['Level',j.why.level],['Skills',j.why.skills],['Domain',j.why.domain]].forEach(function(x){ if(x[1]){ var li=el('li'); li.appendChild(el('strong',null,x[0]+': ')); li.appendChild(document.createTextNode(x[1])); w.appendChild(li);} }); c.appendChild(w); }
+      if(j.excluded){ c.appendChild(el('p','note','Excluded: '+(j.eligibility_note||'eligibility blocker'))); }
+      if(j.gen && j.gen.coverage && j.gen.coverage.pct!=null){ c.appendChild(el('p','note','Resume generator keyword coverage: '+j.gen.coverage.pct+'%'+(j.gen.coverage.confidence?' · confidence '+j.gen.coverage.confidence:'')+'. A nudge, not a verdict: much of it is posting boilerplate.')); }
+
+      var d = el('details'); d.appendChild(el('summary',null,'Analysis'));
+      if(j.jd_summary){d.appendChild(el('h3',null,'The job')); d.appendChild(el('p',null,j.jd_summary));}
+      listSection(d,'Stated requirements', j.requirements_seen, function(r){return el('li',null,r);});
+      listSection(d,'Coverage (what your resume supports)', j.coverage, function(x){
+        var li=el('li'); var b=el('strong',null,(x.requirement||'')+': '); li.appendChild(b); li.appendChild(document.createTextNode(x.evidence||'')); return li;});
+      listSection(d,'Gaps', j.gaps, function(g){
+        var li=el('li'); li.appendChild(el('span','sev '+(g.severity||'minor'), g.severity||'minor'));
+        li.appendChild(el('strong',null,g.item||'')); if(g.note){li.appendChild(el('div','note',g.note));} return li;});
+      if(j.eligibility_note || j.eligibility){
+        d.appendChild(el('div','elig '+(j.eligibility==='blocked'?'blocked':''), 'Eligibility ('+(j.eligibility||'check')+'): '+(j.eligibility_note||'')));
+      }
+      var u = safeUrl(j.url);
+      if(u){var a=el('a','apply-link','Open posting'); a.href=u; a.target='_blank'; a.rel='noopener noreferrer'; d.appendChild(a);}
+      var cur = j.decision && j.decision.status;
+      if(cur){ chip.appendChild(el('span','tag', cur==='interested'?'INTERESTED':cur==='applied'?'APPLIED '+String(j.decision.at||'').slice(0,10):'ARCHIVED')); }
+      var mk = el('div','mark');
+      [['interested','☆ Interested'],['applied','✓ I applied'],['archived','Archive']].forEach(function(o){
+        var b = el('button', cur===o[0]?'on':'', cur===o[0]? o[1]+' (undo)' : o[1]); b.type='button';
+        b.onclick=function(){ mark(j, cur===o[0] ? 'none' : o[0]); }; mk.appendChild(b);
+      });
+      c.appendChild(mk);
+      c.appendChild(d); jdSection(c, j); actions(c, j); list.appendChild(c);
+    });
+  }
+
+  function buildFilters(){
+    var f = document.getElementById('filters'); f.textContent='';
+    function group(key, opts){
+      opts.forEach(function(o){
+        var b = el('button',null,o[1]); b.type='button'; b.setAttribute('aria-pressed', state[key]===o[0]);
+        b.onclick=function(){state[key]=o[0]; buildFilters(); render();}; f.appendChild(b);
+      });
+    }
+    var cnt = function(v){return data.jobs.filter(function(j){var d=j.decision&&j.decision.status; return j.excluded?false:v==='review'?!d:v==='all'?true:d===v;}).length;};
+    group('view',[['review','To review ('+cnt('review')+')'],['interested','Interested ('+cnt('interested')+')'],['applied','Applied ('+cnt('applied')+')'],['archived','Archived ('+cnt('archived')+')'],['excluded','Excluded ('+data.jobs.filter(function(j){return j.excluded;}).length+')'],['all','All']]);
+    var sc = function(k){return data.jobs.filter(function(j){return k==='all'||j.src===k;}).length;};
+    group('src',[['all','All sources'],['linkedin','LinkedIn ('+sc('linkedin')+')'],['indeed','Indeed ('+sc('indeed')+')'],['company','Company sites ('+sc('company')+')'],['himalayas','Himalayas ('+sc('himalayas')+')']]);
+    group('market',[['all','All markets'],['toronto','Toronto'],['remote','Remote'],['bangkok','Bangkok']]);
+    group('verdict',[['all','Any verdict'],['apply','Apply'],['stretch','Stretch'],['skip','Skip']]);
+  }
+
+  function load(){ fetch(base+'screening.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    data = d && d.jobs ? d : {jobs:[]};
+    var n = data.jobs.length;
+    document.getElementById('sub').textContent = n
+      ? n+' open jobs' + (data.hidden && (data.hidden.older||data.hidden.closed) ? ' ('+data.hidden.older+' older than '+data.max_age_days+' days and '+data.hidden.closed+' taken down are hidden)' : '') + (data.runs_today!=null ? ' · '+data.runs_today+'/'+data.daily_cap+' resume runs today' : '') + (data.generated ? ' · '+String(data.generated).slice(0,10) : '')
+      : 'No screening results yet.';
+    buildFilters(); render();
+  }).catch(function(){document.getElementById('sub').textContent='Could not load results.';}); }
+  load();
+})();
+</script>
+</body>
+</html>

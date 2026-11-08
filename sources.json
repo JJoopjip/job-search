@@ -1,0 +1,1223 @@
+{
+ "locations": [
+  "toronto",
+  "remote",
+  "bangkok"
+ ],
+ "boards": [
+  {
+   "company": "Fullscript",
+   "ats": "lever",
+   "slug": "fullscript",
+   "industry": "health"
+  },
+  {
+   "company": "PocketHealth",
+   "ats": "lever",
+   "slug": "PocketHealth",
+   "industry": "health"
+  },
+  {
+   "company": "Wealthsimple",
+   "ats": "ashby",
+   "slug": "wealthsimple",
+   "industry": "other"
+  },
+  {
+   "company": "Veeva Systems",
+   "ats": "lever",
+   "slug": "veeva",
+   "industry": "health"
+  },
+  {
+   "company": "Included Health",
+   "ats": "lever",
+   "slug": "includedhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Ro",
+   "ats": "lever",
+   "slug": "ro",
+   "industry": "health"
+  },
+  {
+   "company": "Elation Health",
+   "ats": "greenhouse",
+   "slug": "elationhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Sword Health",
+   "ats": "greenhouse",
+   "slug": "swordhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Suvoda",
+   "ats": "greenhouse",
+   "slug": "suvoda",
+   "industry": "health"
+  },
+  {
+   "company": "Doximity",
+   "ats": "greenhouse",
+   "slug": "doximity",
+   "industry": "health"
+  },
+  {
+   "company": "Maven Clinic",
+   "ats": "greenhouse",
+   "slug": "mavenclinic",
+   "industry": "health"
+  },
+  {
+   "company": "Omada Health",
+   "ats": "greenhouse",
+   "slug": "omadahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Talkspace",
+   "ats": "greenhouse",
+   "slug": "talkspace",
+   "industry": "health"
+  },
+  {
+   "company": "BetterHelp",
+   "ats": "greenhouse",
+   "slug": "betterhelp",
+   "industry": "health"
+  },
+  {
+   "company": "Amwell",
+   "ats": "greenhouse",
+   "slug": "amwell",
+   "industry": "health"
+  },
+  {
+   "company": "Zocdoc",
+   "ats": "greenhouse",
+   "slug": "zocdoc",
+   "industry": "health"
+  },
+  {
+   "company": "Natera",
+   "ats": "greenhouse",
+   "slug": "natera",
+   "industry": "health"
+  },
+  {
+   "company": "Veracyte",
+   "ats": "greenhouse",
+   "slug": "veracyte",
+   "industry": "health"
+  },
+  {
+   "company": "Twist Bioscience",
+   "ats": "greenhouse",
+   "slug": "twistbioscience",
+   "industry": "health"
+  },
+  {
+   "company": "Flatiron Health",
+   "ats": "greenhouse",
+   "slug": "flatironhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Komodo Health",
+   "ats": "greenhouse",
+   "slug": "komodohealth",
+   "industry": "health"
+  },
+  {
+   "company": "Abridge",
+   "ats": "ashby",
+   "slug": "abridge",
+   "industry": "health"
+  },
+  {
+   "company": "Commure",
+   "ats": "ashby",
+   "slug": "commure",
+   "industry": "health"
+  },
+  {
+   "company": "Headway",
+   "ats": "ashby",
+   "slug": "headway",
+   "industry": "health"
+  },
+  {
+   "company": "Tennr",
+   "ats": "ashby",
+   "slug": "tennr",
+   "industry": "health"
+  },
+  {
+   "company": "OpenEvidence",
+   "ats": "ashby",
+   "slug": "openevidence",
+   "industry": "health"
+  },
+  {
+   "company": "Candid Health",
+   "ats": "ashby",
+   "slug": "candidhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Nabla",
+   "ats": "ashby",
+   "slug": "nabla",
+   "industry": "health"
+  },
+  {
+   "company": "Maple",
+   "ats": "lever",
+   "slug": "getmaple",
+   "industry": "health"
+  },
+  {
+   "company": "Practice Better",
+   "ats": "greenhouse",
+   "slug": "practicebetter",
+   "industry": "health"
+  },
+  {
+   "company": "PointClickCare",
+   "ats": "lever",
+   "slug": "pointclickcare",
+   "industry": "health"
+  },
+  {
+   "company": "Cohere",
+   "ats": "ashby",
+   "slug": "cohere",
+   "industry": "other"
+  },
+  {
+   "company": "D2L",
+   "ats": "greenhouse",
+   "slug": "d2l",
+   "industry": "other"
+  },
+  {
+   "company": "1Password",
+   "ats": "ashby",
+   "slug": "1password",
+   "industry": "other"
+  },
+  {
+   "company": "Clearco",
+   "ats": "ashby",
+   "slug": "clearco",
+   "industry": "other"
+  },
+  {
+   "company": "Hootsuite",
+   "ats": "greenhouse",
+   "slug": "hootsuite",
+   "industry": "other"
+  },
+  {
+   "company": "Braze",
+   "ats": "greenhouse",
+   "slug": "braze",
+   "industry": "other"
+  },
+  {
+   "company": "Faire",
+   "ats": "greenhouse",
+   "slug": "faire",
+   "industry": "other"
+  },
+  {
+   "company": "Tailscale",
+   "ats": "greenhouse",
+   "slug": "tailscale",
+   "industry": "other"
+  },
+  {
+   "company": "Tebra",
+   "ats": "greenhouse",
+   "slug": "tebra",
+   "industry": "health"
+  },
+  {
+   "company": "Science 37",
+   "ats": "greenhouse",
+   "slug": "science37",
+   "industry": "health"
+  },
+  {
+   "company": "AbCellera",
+   "ats": "greenhouse",
+   "slug": "abcellera",
+   "industry": "health"
+  },
+  {
+   "company": "Relay Therapeutics",
+   "ats": "greenhouse",
+   "slug": "relaytherapeutics",
+   "industry": "health"
+  },
+  {
+   "company": "Oscar Health",
+   "ats": "greenhouse",
+   "slug": "oscar",
+   "industry": "health"
+  },
+  {
+   "company": "HealthJoy",
+   "ats": "greenhouse",
+   "slug": "healthjoy",
+   "industry": "health"
+  },
+  {
+   "company": "One Medical",
+   "ats": "greenhouse",
+   "slug": "onemedical",
+   "industry": "health"
+  },
+  {
+   "company": "Parsley Health",
+   "ats": "greenhouse",
+   "slug": "parsleyhealth",
+   "industry": "health"
+  },
+  {
+   "company": "HealthVerity",
+   "ats": "greenhouse",
+   "slug": "healthverity",
+   "industry": "health"
+  },
+  {
+   "company": "Generate Biomedicines",
+   "ats": "greenhouse",
+   "slug": "generatebiomedicines",
+   "industry": "health"
+  },
+  {
+   "company": "Ginkgo Bioworks",
+   "ats": "greenhouse",
+   "slug": "ginkgobioworks",
+   "industry": "health"
+  },
+  {
+   "company": "Freenome",
+   "ats": "greenhouse",
+   "slug": "freenome",
+   "industry": "health"
+  },
+  {
+   "company": "Kymera Therapeutics",
+   "ats": "greenhouse",
+   "slug": "kymeratherapeutics",
+   "industry": "health"
+  },
+  {
+   "company": "Revolution Medicines",
+   "ats": "greenhouse",
+   "slug": "revolutionmedicines",
+   "industry": "health"
+  },
+  {
+   "company": "Adaptive Biotechnologies",
+   "ats": "greenhouse",
+   "slug": "adaptivebiotechnologies",
+   "industry": "health"
+  },
+  {
+   "company": "Beam Therapeutics",
+   "ats": "greenhouse",
+   "slug": "beamtherapeutics",
+   "industry": "health"
+  },
+  {
+   "company": "BridgeBio",
+   "ats": "greenhouse",
+   "slug": "bridgebio",
+   "industry": "health"
+  },
+  {
+   "company": "Luma Health",
+   "ats": "greenhouse",
+   "slug": "lumahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Aledade",
+   "ats": "lever",
+   "slug": "aledade",
+   "industry": "health"
+  },
+  {
+   "company": "Unlearn.AI",
+   "ats": "ashby",
+   "slug": "unlearn",
+   "industry": "health"
+  },
+  {
+   "company": "Inato",
+   "ats": "ashby",
+   "slug": "inato",
+   "industry": "health"
+  },
+  {
+   "company": "Rula Health",
+   "ats": "ashby",
+   "slug": "rula",
+   "industry": "health"
+  },
+  {
+   "company": "Benchling",
+   "ats": "ashby",
+   "slug": "benchling",
+   "industry": "health"
+  },
+  {
+   "company": "Truemed",
+   "ats": "ashby",
+   "slug": "truemed",
+   "industry": "health"
+  },
+  {
+   "company": "Counsel Health",
+   "ats": "ashby",
+   "slug": "counsel",
+   "industry": "health"
+  },
+  {
+   "company": "Stripe",
+   "ats": "greenhouse",
+   "slug": "stripe",
+   "industry": "other"
+  },
+  {
+   "company": "Affirm",
+   "ats": "greenhouse",
+   "slug": "affirm",
+   "industry": "other"
+  },
+  {
+   "company": "Okta",
+   "ats": "greenhouse",
+   "slug": "okta",
+   "industry": "other"
+  },
+  {
+   "company": "GitLab",
+   "ats": "greenhouse",
+   "slug": "gitlab",
+   "industry": "other"
+  },
+  {
+   "company": "Lyft",
+   "ats": "greenhouse",
+   "slug": "lyft",
+   "industry": "other"
+  },
+  {
+   "company": "HelloFresh",
+   "ats": "greenhouse",
+   "slug": "hellofresh",
+   "industry": "other"
+  },
+  {
+   "company": "Brex",
+   "ats": "greenhouse",
+   "slug": "brex",
+   "industry": "other"
+  },
+  {
+   "company": "Elastic",
+   "ats": "greenhouse",
+   "slug": "elastic",
+   "industry": "other"
+  },
+  {
+   "company": "Samsara",
+   "ats": "greenhouse",
+   "slug": "samsara",
+   "industry": "other"
+  },
+  {
+   "company": "Instacart",
+   "ats": "greenhouse",
+   "slug": "instacart",
+   "industry": "other"
+  },
+  {
+   "company": "Vanta",
+   "ats": "ashby",
+   "slug": "vanta",
+   "industry": "other"
+  },
+  {
+   "company": "Ramp",
+   "ats": "ashby",
+   "slug": "ramp",
+   "industry": "other"
+  },
+  {
+   "company": "Alayacare",
+   "ats": "greenhouse",
+   "slug": "alayacare",
+   "industry": "health"
+  },
+  {
+   "company": "Jane App",
+   "ats": "ashby",
+   "slug": "jane",
+   "industry": "health"
+  },
+  {
+   "company": "Tali AI",
+   "ats": "lever",
+   "slug": "tali-ai",
+   "industry": "health"
+  },
+  {
+   "company": "Felix",
+   "ats": "ashby",
+   "slug": "felix",
+   "industry": "health"
+  },
+  {
+   "company": "Mednow",
+   "ats": "lever",
+   "slug": "mednow",
+   "industry": "health"
+  },
+  {
+   "company": "Xenon Pharmaceuticals",
+   "ats": "ashby",
+   "slug": "xenon",
+   "industry": "health"
+  },
+  {
+   "company": "Prenuvo",
+   "ats": "greenhouse",
+   "slug": "prenuvo",
+   "industry": "health"
+  },
+  {
+   "company": "Dotmatics",
+   "ats": "greenhouse",
+   "slug": "dotmatics",
+   "industry": "health"
+  },
+  {
+   "company": "Absci",
+   "ats": "ashby",
+   "slug": "absci",
+   "industry": "health"
+  },
+  {
+   "company": "Wheel",
+   "ats": "ashby",
+   "slug": "wheel",
+   "industry": "health"
+  },
+  {
+   "company": "Alan",
+   "ats": "ashby",
+   "slug": "alan",
+   "industry": "health"
+  },
+  {
+   "company": "Lifestance",
+   "ats": "lever",
+   "slug": "lifestance",
+   "industry": "health"
+  },
+  {
+   "company": "Lyra Health",
+   "ats": "lever",
+   "slug": "lyrahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Hinge Health",
+   "ats": "ashby",
+   "slug": "hinge-health",
+   "industry": "health"
+  },
+  {
+   "company": "Qventus",
+   "ats": "greenhouse",
+   "slug": "qventus",
+   "industry": "health"
+  },
+  {
+   "company": "Oura",
+   "ats": "greenhouse",
+   "slug": "oura",
+   "industry": "health"
+  },
+  {
+   "company": "WW",
+   "ats": "greenhouse",
+   "slug": "ww",
+   "industry": "health"
+  },
+  {
+   "company": "Gusto",
+   "ats": "greenhouse",
+   "slug": "gusto",
+   "industry": "health"
+  },
+  {
+   "company": "Justworks",
+   "ats": "greenhouse",
+   "slug": "justworks",
+   "industry": "health"
+  },
+  {
+   "company": "Clover Health",
+   "ats": "greenhouse",
+   "slug": "cloverhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Cohere Health",
+   "ats": "greenhouse",
+   "slug": "coherehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Judi Health",
+   "ats": "greenhouse",
+   "slug": "judihealth",
+   "industry": "health"
+  },
+  {
+   "company": "Blink Health",
+   "ats": "greenhouse",
+   "slug": "blinkhealth",
+   "industry": "health"
+  },
+  {
+   "company": "GoodRx",
+   "ats": "ashby",
+   "slug": "goodrx",
+   "industry": "health"
+  },
+  {
+   "company": "Rxsense",
+   "ats": "greenhouse",
+   "slug": "rxsense",
+   "industry": "health"
+  },
+  {
+   "company": "SmithRx",
+   "ats": "greenhouse",
+   "slug": "smithrx",
+   "industry": "health"
+  },
+  {
+   "company": "Rightway",
+   "ats": "greenhouse",
+   "slug": "rightway",
+   "industry": "health"
+  },
+  {
+   "company": "Collective Health",
+   "ats": "greenhouse",
+   "slug": "collectivehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Centivo",
+   "ats": "ashby",
+   "slug": "centivo",
+   "industry": "health"
+  },
+  {
+   "company": "Sana Benefits",
+   "ats": "lever",
+   "slug": "sanabenefits",
+   "industry": "health"
+  },
+  {
+   "company": "Nayya",
+   "ats": "greenhouse",
+   "slug": "nayya",
+   "industry": "health"
+  },
+  {
+   "company": "Quantum Health",
+   "ats": "lever",
+   "slug": "quantum-health",
+   "industry": "health"
+  },
+  {
+   "company": "Zus Health (Lever)",
+   "ats": "lever",
+   "slug": "zushealth",
+   "industry": "health"
+  },
+  {
+   "company": "Zus Health",
+   "ats": "ashby",
+   "slug": "zus-health",
+   "industry": "health"
+  },
+  {
+   "company": "Florence Healthcare",
+   "ats": "greenhouse",
+   "slug": "florencehealthcare",
+   "industry": "health"
+  },
+  {
+   "company": "Medrio",
+   "ats": "greenhouse",
+   "slug": "medrio",
+   "industry": "health"
+  },
+  {
+   "company": "Lightship",
+   "ats": "lever",
+   "slug": "lightship",
+   "industry": "health"
+  },
+  {
+   "company": "Paradigm Health",
+   "ats": "ashby",
+   "slug": "paradigm-health",
+   "industry": "health"
+  },
+  {
+   "company": "Formation Bio",
+   "ats": "greenhouse",
+   "slug": "formationbio",
+   "industry": "health"
+  },
+  {
+   "company": "Veramed",
+   "ats": "greenhouse",
+   "slug": "veramed",
+   "industry": "health"
+  },
+  {
+   "company": "Verana Health",
+   "ats": "greenhouse",
+   "slug": "veranahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Qualio",
+   "ats": "greenhouse",
+   "slug": "qualio",
+   "industry": "health"
+  },
+  {
+   "company": "MasterControl",
+   "ats": "greenhouse",
+   "slug": "mastercontrol",
+   "industry": "health"
+  },
+  {
+   "company": "Greenlight Guru",
+   "ats": "greenhouse",
+   "slug": "greenlightguru",
+   "industry": "health"
+  },
+  {
+   "company": "Compass Pathways",
+   "ats": "greenhouse",
+   "slug": "compasspathways",
+   "industry": "health"
+  },
+  {
+   "company": "Disc Medicine",
+   "ats": "greenhouse",
+   "slug": "discmedicine",
+   "industry": "health"
+  },
+  {
+   "company": "Iovance Biotherapeutics",
+   "ats": "greenhouse",
+   "slug": "iovancebiotherapeutics",
+   "industry": "health"
+  },
+  {
+   "company": "Nurix",
+   "ats": "greenhouse",
+   "slug": "nurix",
+   "industry": "health"
+  },
+  {
+   "company": "Verve",
+   "ats": "greenhouse",
+   "slug": "verve",
+   "industry": "health"
+  },
+  {
+   "company": "Prime Medicine",
+   "ats": "greenhouse",
+   "slug": "primemedicine",
+   "industry": "health"
+  },
+  {
+   "company": "Regenxbio",
+   "ats": "lever",
+   "slug": "regenxbio",
+   "industry": "health"
+  },
+  {
+   "company": "Scholar Rock",
+   "ats": "lever",
+   "slug": "scholarrock",
+   "industry": "health"
+  },
+  {
+   "company": "Kyverna",
+   "ats": "lever",
+   "slug": "Kyverna",
+   "industry": "health"
+  },
+  {
+   "company": "Replimune",
+   "ats": "ashby",
+   "slug": "replimune",
+   "industry": "health"
+  },
+  {
+   "company": "Insitro",
+   "ats": "ashby",
+   "slug": "insitro",
+   "industry": "health"
+  },
+  {
+   "company": "Owkin",
+   "ats": "ashby",
+   "slug": "owkin",
+   "industry": "health"
+  },
+  {
+   "company": "PathAI",
+   "ats": "greenhouse",
+   "slug": "pathai",
+   "industry": "health"
+  },
+  {
+   "company": "Delfi Diagnostics",
+   "ats": "lever",
+   "slug": "delfidiagnostics",
+   "industry": "health"
+  },
+  {
+   "company": "GeneDx",
+   "ats": "greenhouse",
+   "slug": "genedx",
+   "industry": "health"
+  },
+  {
+   "company": "Element Biosciences",
+   "ats": "greenhouse",
+   "slug": "elementbiosciences",
+   "industry": "health"
+  },
+  {
+   "company": "Parse Biosciences",
+   "ats": "greenhouse",
+   "slug": "parsebiosciences",
+   "industry": "health"
+  },
+  {
+   "company": "Butterfly Network",
+   "ats": "greenhouse",
+   "slug": "butterflynetwork",
+   "industry": "health"
+  },
+  {
+   "company": "Outset Medical",
+   "ats": "greenhouse",
+   "slug": "outsetmedical",
+   "industry": "health"
+  },
+  {
+   "company": "Revance",
+   "ats": "greenhouse",
+   "slug": "revance",
+   "industry": "health"
+  },
+  {
+   "company": "Eko",
+   "ats": "lever",
+   "slug": "ekohealth",
+   "industry": "health"
+  },
+  {
+   "company": "Rapid AI",
+   "ats": "lever",
+   "slug": "rapidai",
+   "industry": "health"
+  },
+  {
+   "company": "Overjet",
+   "ats": "ashby",
+   "slug": "overjet",
+   "industry": "health"
+  },
+  {
+   "company": "Hone Health",
+   "ats": "greenhouse",
+   "slug": "honehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Midi Health",
+   "ats": "greenhouse",
+   "slug": "midihealth",
+   "industry": "health"
+  },
+  {
+   "company": "Form Health",
+   "ats": "greenhouse",
+   "slug": "formhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Twin Health",
+   "ats": "greenhouse",
+   "slug": "twinhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Virta Health",
+   "ats": "ashby",
+   "slug": "virtahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Talkiatry",
+   "ats": "ashby",
+   "slug": "talkiatry",
+   "industry": "health"
+  },
+  {
+   "company": "SonderMind",
+   "ats": "ashby",
+   "slug": "sondermind",
+   "industry": "health"
+  },
+  {
+   "company": "Grow Therapy",
+   "ats": "ashby",
+   "slug": "grow-therapy",
+   "industry": "health"
+  },
+  {
+   "company": "Two Chairs",
+   "ats": "greenhouse",
+   "slug": "twochairs",
+   "industry": "health"
+  },
+  {
+   "company": "Charlie Health",
+   "ats": "greenhouse",
+   "slug": "charliehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Eleos Health",
+   "ats": "greenhouse",
+   "slug": "eleoshealth",
+   "industry": "health"
+  },
+  {
+   "company": "Mantra Health",
+   "ats": "greenhouse",
+   "slug": "mantrahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Valera Health",
+   "ats": "greenhouse",
+   "slug": "valerahealth",
+   "industry": "health"
+  },
+  {
+   "company": "Bicycle Health",
+   "ats": "greenhouse",
+   "slug": "bicyclehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Folx",
+   "ats": "greenhouse",
+   "slug": "folxhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Carrot Fertility",
+   "ats": "greenhouse",
+   "slug": "carrotfertility",
+   "industry": "health"
+  },
+  {
+   "company": "Sprinter Health",
+   "ats": "ashby",
+   "slug": "sprinter-health",
+   "industry": "health"
+  },
+  {
+   "company": "Assort Health",
+   "ats": "ashby",
+   "slug": "assorthealth",
+   "industry": "health"
+  },
+  {
+   "company": "Notable",
+   "ats": "ashby",
+   "slug": "notable",
+   "industry": "health"
+  },
+  {
+   "company": "Infinitus",
+   "ats": "ashby",
+   "slug": "infinitus",
+   "industry": "health"
+  },
+  {
+   "company": "Suki",
+   "ats": "greenhouse",
+   "slug": "suki",
+   "industry": "health"
+  },
+  {
+   "company": "Freed",
+   "ats": "ashby",
+   "slug": "freed",
+   "industry": "health"
+  },
+  {
+   "company": "Spruce",
+   "ats": "ashby",
+   "slug": "spruce",
+   "industry": "health"
+  },
+  {
+   "company": "Healthie",
+   "ats": "greenhouse",
+   "slug": "healthie",
+   "industry": "health"
+  },
+  {
+   "company": "Health Gorilla",
+   "ats": "ashby",
+   "slug": "healthgorilla",
+   "industry": "health"
+  },
+  {
+   "company": "Cadence",
+   "ats": "greenhouse",
+   "slug": "cadencehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Parachute Health",
+   "ats": "greenhouse",
+   "slug": "parachutehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Develop Health",
+   "ats": "ashby",
+   "slug": "develop-health",
+   "industry": "health"
+  },
+  {
+   "company": "Anterior",
+   "ats": "ashby",
+   "slug": "anterior",
+   "industry": "health"
+  },
+  {
+   "company": "Unite Us",
+   "ats": "greenhouse",
+   "slug": "uniteus",
+   "industry": "health"
+  },
+  {
+   "company": "Moxe Health",
+   "ats": "greenhouse",
+   "slug": "moxehealth",
+   "industry": "health"
+  },
+  {
+   "company": "Octave",
+   "ats": "greenhouse",
+   "slug": "octave",
+   "industry": "health"
+  },
+  {
+   "company": "Honor",
+   "ats": "greenhouse",
+   "slug": "honor",
+   "industry": "health"
+  },
+  {
+   "company": "Pearl Health",
+   "ats": "ashby",
+   "slug": "pearlhealth",
+   "industry": "health"
+  },
+  {
+   "company": "Tia",
+   "ats": "greenhouse",
+   "slug": "tia",
+   "industry": "health"
+  }
+ ],
+ "aggregators": {
+  "himalayas": {
+   "enabled": true,
+   "country": "Canada",
+   "pages_per_query": 3,
+   "queries": [
+    "business development",
+    "partnerships",
+    "project manager",
+    "program manager",
+    "clinical operations",
+    "project coordinator",
+    "implementation manager",
+    "market access"
+   ]
+  },
+  "adzuna": {
+   "enabled": true,
+   "country": "ca",
+   "where": [
+    "Toronto"
+   ],
+   "pages_per_query": 2,
+   "max_days_old": 30,
+   "queries": [
+    "business development",
+    "partnerships",
+    "project manager",
+    "project coordinator",
+    "clinical operations",
+    "program manager",
+    "pharmaceutical",
+    "medical device"
+   ]
+  },
+  "jooble": {
+   "enabled": true,
+   "where": [
+    "Toronto, ON"
+   ],
+   "queries": [
+    "business development",
+    "project manager",
+    "clinical operations",
+    "partnerships"
+   ]
+  }
+ },
+ "title_include": [
+  "business development",
+  "partnership",
+  "partnerships",
+  "alliance",
+  "alliances",
+  "channel",
+  "project manager",
+  "project management",
+  "program manager",
+  "programme manager",
+  "project coordinator",
+  "program coordinator",
+  "project lead",
+  "clinical operations",
+  "clinical project",
+  "clinical trial",
+  "implementation",
+  "delivery manager",
+  "market access",
+  "market expansion",
+  "commercial operations",
+  "strategic",
+  "strategy",
+  "account development",
+  "partner",
+  "operations associate",
+  "operations specialist",
+  "operations coordinator",
+  "pmo",
+  "scrum",
+  "consultant"
+ ],
+ "title_exclude": [
+  "engineer",
+  "developer",
+  "designer",
+  "data scientist",
+  "scientist",
+  "software",
+  "devops",
+  "security",
+  "counsel",
+  "attorney",
+  "legal",
+  "accountant",
+  "recruiter",
+  "nurse",
+  "physician",
+  "therapist",
+  "psychiatr",
+  "vice president",
+  "vp,",
+  "vp ",
+  "svp",
+  "chief",
+  "head of",
+  "director",
+  "principal",
+  "staff",
+  "intern",
+  "hr ",
+  "human resources",
+  "recruit",
+  "talent",
+  "finance",
+  "financial",
+  "fraud",
+  "payroll",
+  "tax ",
+  "people ops"
+ ],
+ "toronto_terms": [
+  "toronto",
+  "ontario",
+  "greater toronto",
+  " gta",
+  "mississauga",
+  "markham",
+  "brampton",
+  "vaughan",
+  "oakville"
+ ],
+ "canada_terms": [
+  "canada",
+  "north america",
+  "ontario",
+  "toronto",
+  "ottawa"
+ ],
+ "us_only_terms": [
+  "united states",
+  "usa",
+  "u.s.",
+  ", us",
+  "us only",
+  "us-based"
+ ]
+}

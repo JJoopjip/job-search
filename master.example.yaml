@@ -1,0 +1,292 @@
+# master.example.yaml — a FICTIONAL persona for demos, tests, and portfolio use.
+#
+# Everything below is invented (person, companies, metrics). It exists so a
+# fresh clone of this repo can run `validate`/`render` and see the pipeline work
+# without anyone's private data. Your real bank lives in ./master.yaml (git-
+# ignored) or wherever RESUME_GEN_MASTER points — see the README "Your data".
+#
+# It mirrors the real schema exactly: profiles (bd/pm/dm/general), per-bullet
+# `variants` keyed by profile, `themes`, a `summaries` bank, `highlights`,
+# `skills` groups, `projects`, `experience_sections` (each role's `section` picks
+# its heading; roles render reverse-chronologically within a section), and an
+# `additional: true` role. Keep it valid:
+# `python3 -m pytest tests/test_example_master.py` renders it to one page.
+schema_version: 1.0
+
+authoring_rules:
+  locked_fields:
+    - metrics/numbers (e.g. "35%", "12", "3x", "$1.2M")
+    - dates and durations
+    - job titles
+    - company names and locations
+    - degree names, GPA, certifications
+  rephrasable:
+    - summary prose
+    - "connective phrasing within a bullet (verbs, framing) — provided every locked field inside it is preserved verbatim"
+  hard_rules:
+    - Never invent an achievement, metric, tool, or responsibility not present here.
+    - Never upgrade a number or a scope word ("supported" -> "led") to fit a JD.
+    - Output is a DRAFT for human review; never auto-submit.
+    - One page. If content overflows, drop the lowest-priority bullets, don't shrink facts.
+
+meta:
+  name: Robin Ellery Santos
+  location: Toronto, ON
+  phone: "+1 (555) 017-4098"
+  email: robin.santos@example.com
+  linkedin: linkedin.com/in/robin-ellery-santos
+  portfolio: robinsantos.example.com
+  taglines:
+    bd:      "Business Development · Partnerships · Market Expansion"
+    pm:      "Project Management · PMP"
+    dm:      "Digital Commerce · Brand Marketing · Channel Growth"
+    general: "Program Delivery · Commercial Strategy · Partnerships"
+
+profiles:
+  bd: Business Development / Partnerships / Market Expansion
+  pm: Project Management / PMP
+  dm: Digital Commerce / Brand Marketing / Channel Growth
+  general: "Open / default — used when no job description is in play"
+
+summaries:
+  - id: sum_general
+    profile: general
+    text: >-
+      Program and commercial professional with six years delivering
+      cross-functional launches and growth initiatives across consumer-health
+      and fintech markets. Manages scope, schedule, and budget across Agile and
+      Waterfall teams, turning market insight into shipped product and measured
+      results. M.S. Management, Riverton University (GPA 3.8); PMP certified.
+  - id: sum_pm
+    profile: pm
+    text: >-
+      PMP-certified project manager with six years delivering cross-functional
+      product launches and change initiatives across consumer-health and
+      fintech. Manages scope, schedule, and budget across Agile and Waterfall
+      environments, with a track record of on-time delivery and stakeholder
+      engagement up to executive level. M.S. Management, Riverton University
+      (GPA 3.8), concentration in Business Analysis.
+  - id: sum_bd
+    profile: bd
+    text: >-
+      Business development professional with six years building pipeline,
+      sourcing partners, and expanding channels across consumer-health and
+      fintech markets. Translates market insight into commercial action and
+      negotiates across product, finance, and commercial teams. Grew a new
+      partner channel 3x and launched a direct-to-consumer line. M.S.
+      Management, Riverton University (GPA 3.8); PMP certified.
+
+experience_sections:
+  - { id: experience, heading: "Experience" }
+  - { id: additional, heading: "Additional Experience" }
+
+experience:
+  - id: harborlight
+    company: Harborlight Community Foundation
+    location: Toronto, ON
+    title: Program & Outreach Coordinator
+    start: "Feb 2026"
+    end: "Present"
+    section: experience
+    multinational: false
+    part_time: true
+    concurrent: true
+    bullets:
+      - id: hl_outreach
+        themes: [outreach, systems-design, partnerships, process-improvement]
+        variants:
+          pm: >-
+            Built a tiered outreach system spanning 9 partner categories and 4
+            engagement stages — standardized templates, a prospect database, and
+            a tracked follow-up cadence.
+          bd: >-
+            Built a partner-outreach engine from scratch across 9 categories,
+            opening 12 new community and sponsor relationships in one quarter.
+          dm: >-
+            Launched a segmented email and social outreach program across 9
+            audience categories, lifting event sign-ups 35% quarter over quarter.
+          general: >-
+            Built a tiered outreach system across 9 partner categories with
+            standardized templates, a prospect database, and a follow-up cadence.
+
+  - id: novacare
+    company: NovaCare Consumer Health Inc.
+    location: Toronto, ON
+    title: Business Development & Marketing Manager
+    start: "Jun 2023"
+    end: "Jan 2026"
+    section: experience
+    multinational: false
+    bullets:
+      - id: nc_dtc
+        themes: [channel-building, go-to-market, launch, distribution, partnerships]
+        variants:
+          pm: >-
+            Delivered a cross-functional program to launch the company's first
+            direct-to-consumer channel, coordinating sourcing, contract
+            negotiation, and rollout across 3 retail chains and a new webstore.
+          bd: >-
+            Opened the company's first direct-to-consumer channel, securing
+            distribution with 3 national retail chains and launching a 12-SKU
+            wellness line.
+          dm: >-
+            Built the company's first direct-to-consumer channel across retail,
+            e-commerce, and social commerce — placing 12 SKUs and standing up the
+            webstore and paid-social funnel.
+          general: >-
+            Opened the company's first direct-to-consumer channel across 3 retail
+            chains and a new webstore, launching a 12-SKU wellness line.
+      - id: nc_team
+        themes: [leadership, team-building, coordination]
+        variants:
+          pm: >-
+            Led a 6-person cross-functional team (marketing, e-commerce, design,
+            operations), setting priorities, coordinating output, and running the
+            weekly delivery cadence.
+          general: >-
+            Led a 6-person cross-functional team across marketing, e-commerce,
+            design, and operations, setting priorities and coordinating delivery.
+      - id: nc_growth
+        themes: [growth, retention, analytics, revenue]
+        variants:
+          bd: >-
+            Grew the partner channel 3x in 18 months and sustained an 88%
+            repeat-order rate across pharmacy and clinic accounts.
+          dm: >-
+            Drove online revenue 3x in 18 months through channel and campaign
+            optimization, holding an 88% repeat-purchase rate.
+          general: >-
+            Grew the channel 3x in 18 months while sustaining an 88%
+            repeat-order rate across key accounts.
+
+  - id: meridian
+    company: Meridian Financial Technologies
+    location: Toronto, ON
+    title: Business Analyst, Partnerships
+    start: "Jul 2020"
+    end: "May 2023"
+    section: experience
+    multinational: true
+    multinational_note: "North American arm of a global fintech group"
+    bullets:
+      - id: me_kpi
+        themes: [analysis, reporting, kpi, stakeholder]
+        variants:
+          pm: >-
+            Tracked adoption, revenue, and pipeline KPIs through monthly business
+            reviews, translating performance into recommendations that shaped
+            roadmap and resourcing decisions.
+          general: >-
+            Ran monthly KPI reviews across adoption, revenue, and pipeline,
+            turning the numbers into recommendations for stakeholders.
+          bd: >-
+            Analyzed pipeline and partner performance to prioritize the accounts
+            and integrations worth the team's time, informing quarterly targets.
+      - id: me_integrations
+        themes: [partnerships, delivery, negotiation, coordination]
+        variants:
+          bd: >-
+            Sourced and closed 8 partner integrations from first contact through
+            contract, negotiating terms across product, legal, and finance.
+          pm: >-
+            Coordinated delivery of 8 partner integrations end to end, aligning
+            product, legal, and finance to launch each on schedule.
+          general: >-
+            Delivered 8 partner integrations from first contact to launch,
+            coordinating across product, legal, and finance.
+
+  - id: cafe
+    company: Riverside Coffee Co.
+    location: Toronto, ON
+    title: Barista (Part-Time)
+    start: "Sep 2024"
+    end: "Jun 2026"
+    section: additional
+    part_time: true
+    additional: true
+    bullets:
+      - id: cafe_ops
+        themes: [operations, service, teamwork]
+        variants:
+          general: >-
+            Ran fast-paced front-of-house service during peak hours while
+            balancing part-time work alongside a full-time master's program.
+
+highlights:
+  - { id: hl_growth,      value: "3x",     label: "channel growth in 18 months", profiles: [bd, dm, general] }
+  - { id: hl_retention,   value: "88%",    label: "repeat-order rate",           profiles: [bd, dm, general] }
+  - { id: hl_integrations, value: "8",     label: "partner integrations closed", profiles: [bd, pm, general] }
+  - { id: hl_signups,     value: "35%",    label: "event sign-up lift",          profiles: [dm] }
+  - { id: hl_gpa,         value: "GPA 3.8", label: "M.S. Management",            profiles: [pm, general] }
+  - { id: hl_experience,  value: "6 yrs",  label: "commercial & program delivery", profiles: [pm, bd, general] }
+
+education:
+  - id: riverton
+    institution: Riverton University
+    location: Toronto, Canada
+    degree: M.S. Management
+    detail: "Concentration: Business Analysis · GPA 3.8 / 4.0 · Capstone in growth strategy"
+    start: "2024"
+    end: "2026"
+    anchor: true
+    coursework: [Project Risk Management, Project Finance, Requirements Design and Ownership]
+  - id: eastbrook
+    institution: Eastbrook College
+    location: Vancouver, Canada
+    degree: B.A. Communications
+    detail: "Minor in Economics · Dean's List"
+    start: "2016"
+    end: "2020"
+
+# Optional and relevance-gated: the tailor includes it only for research-type
+# roles. Renders as its own "Publications" section after Education.
+publications:
+  - id: pub_demo
+    themes: [research, analytics, peer-reviewed]
+    citation: >-
+      Co-author, Journal of Demo Analytics (2019): forecasting refill demand
+      for a fictional community pharmacy network.
+
+certifications:
+  - id: pmp
+    name: "Project Management Professional (PMP)"
+
+skills:
+  delivery:
+    label: "Project & Program Delivery"
+    items: [Scope / schedule / budget management, Agile & Waterfall delivery, Risk & issue management,
+            Vendor & contract management, Stakeholder management]
+  leadership:
+    label: "Cross-Functional Leadership"
+    items: [Cross-functional program management, Executive synthesis & briefings, KPI design & reporting,
+            Change management, "Business analysis (BABOK-aligned)"]
+  commercial:
+    label: "Commercial & Marketing"
+    items: [Business development, Market expansion, Digital & channel marketing, Partner negotiation]
+  tools:
+    label: "Tools"
+    items: [Excel & Google Sheets (advanced), Power BI, Tableau, MS Project, "AI tools (ChatGPT, Claude Code)"]
+
+languages:
+  - { name: English,  level: native }
+  - { name: Spanish,  level: fluent }
+  - { name: French,   level: basic }
+
+projects:
+  - id: proj_demo_tooling
+    name: "Job-search tooling — self-built"
+    link: robinsantos.example.com
+    stack: "Python · Flask · AI orchestration · Docker · LaTeX"
+    profiles: [pm, bd, dm, general]
+    themes: [automation, systems-design, ai, tooling, process-improvement]
+    bullets:
+      - id: pj_generator
+        themes: [ai, automation, quality, process-improvement]
+        variants:
+          pm: >-
+            Scoped and delivered an AI resume generator end to end: it turns a
+            job posting into a tailored one-page resume behind deterministic
+            validation, guarding every fact against invention.
+          general: >-
+            Built an AI resume generator that tailors a one-page resume to any
+            posting behind deterministic, fact-checking guardrails.

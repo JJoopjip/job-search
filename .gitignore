@@ -1,0 +1,35 @@
+# Secrets & credentials
+.env
+credentials.json
+token.json
+
+# Real career file (private). Only master.example.yaml (fictional) is tracked.
+/master.yaml
+
+# All runtime data: alert-email jobs, screening results, decisions, generated-resume index
+data/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# OS / editor cruft
+.DS_Store
+*.swp
+*Zone.Identifier
+
+# Claude Code local state
+.claude/
+
+# Private planning notes and personal alert to-do lists (not published)
+/PLAN.md
+/alert_subscriptions.md
+/job_sources.md
+
+# Runtime files the demo server writes into sample_data/
+sample_data/decisions.json
+sample_data/generated.json
+sample_data/runs_log.json
+sample_data/runs/
