@@ -50,6 +50,8 @@ a.apply-link{display:inline-block;margin-top:10px;background:var(--accent);color
 .mark button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 12px;font:inherit;font-size:.9rem;min-height:40px;cursor:pointer}
 .mark button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tag{font-size:.78rem;font-weight:650;border-radius:6px;padding:1px 8px;margin-left:6px;background:var(--stretch-bg);color:var(--stretch)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.nav a{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:.9rem;min-height:40px;display:inline-flex;align-items:center;text-decoration:none}
 .empty{color:var(--mute);text-align:center;padding:30px 0}
 footer{color:var(--mute);font-size:.8rem;margin:24px 0}
 </style>
@@ -57,12 +59,20 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
 <body>
 <main>
   <h1>Job screening</h1>
+  <nav class="nav" aria-label="Other tools"><a id="lnk-resume" href="#">Resume generator</a><a id="lnk-tracker" href="#">Application tracker</a></nav>
   <p class="sub" id="sub">Loading…</p>
   <div class="filters" id="filters" role="group" aria-label="Filters"></div>
   <div id="list"></div>
   <footer>Screened against your master resume. Drafts only: you review and submit every application yourself. Check eligibility on the posting before applying. Some listings come from <a href="https://himalayas.app" target="_blank" rel="noopener noreferrer">Himalayas</a>, and their links lead to the employer's page there.</footer>
 </main>
 <script>
+(function(){
+  try{ // links to the sibling tools: local ports on the laptop, shared Tailscale address on the phone
+    var h=location.hostname,loc=(h==="localhost"||h==="127.0.0.1");
+    document.getElementById("lnk-resume").href=loc?"http://localhost:5000/":location.origin+"/";
+    document.getElementById("lnk-tracker").href=loc?"http://localhost:8000/":"https://"+h+":8443/";
+  }catch(e){}
+})();
 (function(){
   var base = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
   var state = {market:'all', verdict:'all', view:'review', src:'all'};

@@ -192,6 +192,10 @@ def sender_of(headers):
     return m.group(1).lower() if m else ""
 
 
+# Senders that land in the label but are not job alerts (the real Indeed alert sender is jobalert.indeed.com)
+NOT_ALERT_SENDERS = {"indeed.com", "match.indeed.com"}
+
+
 def run(days):
     svc = gmail_service()
     lid = label_id(svc)
@@ -234,7 +238,11 @@ def run(days):
         if lid not in msg.get("labelIds", []):  # defense in depth
             continue
         posted = __import__("datetime").datetime.fromtimestamp(int(msg["internalDate"]) / 1000).strftime("%Y-%m-%d")
-        for c in parse_cards(html_of(msg["payload"]), sender_of(msg["payload"].get("headers", []))):
+        sender = sender_of(msg["payload"].get("headers", []))
+        if sender in NOT_ALERT_SENDERS:  # Indeed application confirmations / "jobs for you" digests, not job alerts
+            done.add(mid)
+            continue
+        for c in parse_cards(html_of(msg["payload"]), sender):
             # every alert card is kept (user choice); title_ok only marks cards that look off-target
             c["title_match"] = bool(title_ok(c["title"]))
             dropped += 0 if c["title_match"] else 1
