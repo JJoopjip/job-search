@@ -2,16 +2,22 @@
 """Read job-alert emails from ONE Gmail label and turn them into job cards for screening.
 
 SAFETY MODEL
-- Read-only scope (gmail.readonly). Never sends, deletes, labels or modifies mail.
-- Only messages carrying the label "Job Alerts" are listed or fetched. Each message is re-checked for that
-  label id before parsing. If the label does not exist, nothing is read.
+- Scope gmail.modify, used for exactly two things: reading, and moving processed alert emails to TRASH
+  (recoverable for 30 days; never permanent delete, never send, never edit labels). Own token file (token.json
+  in this folder), separate from other apps.
+- Only messages carrying the label "Job Alerts" are listed, fetched or trashed. Each message is re-checked for
+  that label id first. If the label does not exist, nothing is touched.
+- --run only reads. --trash moves an email to Trash only when every job card in it is already on the board
+  (graded into screening.json / auto_skipped.json) or is too old to ever be shown. Unparseable mail is kept.
 - Only job cards (title, company, location, link, age) are kept. Email bodies are not stored.
 - No website is fetched: alert links are tracking URLs and are kept as-is. Opening them is up to you.
 
 Run with the Python that has Google libs (the Fieldnotes venv):
   /home/joopjip/application_tracker/.venv/bin/python alerts.py --selftest      # parser test on fake emails, no Gmail
   /home/joopjip/application_tracker/.venv/bin/python alerts.py --labels        # list label NAMES only (no mail read)
+  /home/joopjip/application_tracker/.venv/bin/python alerts.py --auth          # one-time browser consent
   /home/joopjip/application_tracker/.venv/bin/python alerts.py --run [--days 14]
+  /home/joopjip/application_tracker/.venv/bin/python alerts.py --trash [--days 45] [--dry]
 Output: data/alert_jobs.json (same fields as data/jobs.json), state in data/alerts_state.json.
 """
 import argparse
@@ -26,8 +32,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 LABEL_NAME = os.environ.get("ALERTS_LABEL", "Job Alerts")
-TOKEN_PATH = Path(os.environ.get("ALERTS_TOKEN_PATH", "/home/joopjip/application_tracker/token.json"))
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+TOKEN_PATH = Path(os.environ.get("ALERTS_TOKEN_PATH", str(ROOT / "token.json")))
+SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
+MAX_AGE_DAYS = 30
 
 JOB_HOSTS = ("linkedin.com", "indeed.com", "jobsdb.com", "jobthai.com", "jobbank.gc.ca", "glassdoor.",
              "gojobs.gov.on.ca", "biospace.com", "lifesciencesontario.ca", "petridish.ca", "jobtopgun.com",
@@ -196,6 +203,21 @@ def sender_of(headers):
 NOT_ALERT_SENDERS = {"indeed.com", "match.indeed.com"}
 
 
+def card_key(url, title, company, location):
+    """Dedupe key for a job card: LinkedIn posting id if present, else title|company|location."""
+    m = re.search(r"/jobs/view/(\d+)", url)
+    return m.group(1) if m else "|".join((title.lower(), company.lower(), location.lower()))
+
+
+def auth():
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    flow = InstalledAppFlow.from_client_secrets_file(str(ROOT / "credentials.json"), SCOPES)
+    creds = flow.run_local_server(port=8765, open_browser=False, prompt="consent")
+    TOKEN_PATH.write_text(creds.to_json())
+    TOKEN_PATH.chmod(0o600)
+    print(f"Saved {TOKEN_PATH}")
+
+
 def run(days):
     svc = gmail_service()
     lid = label_id(svc)
@@ -218,10 +240,10 @@ def run(days):
     jobs = json.loads(jobs_path.read_text())["jobs"] if jobs_path.exists() else []
     seen = set()
     for j in jobs:
-        m = re.search(r"/jobs/view/(\d+)", j["url"])
-        seen.add((m.group(1),) if m else (j["title"].lower(), j["company"].lower(), j["location"].lower()))
+        seen.add(card_key(j["url"], j["title"], j["company"], j["location"]))
     from fetch import title_ok
     added = dropped = 0
+    cards_of = state.setdefault("cards", {})
     for mid in new:
         msg = None
         for wait in (0, 15, 30, 60, 60):  # Gmail per-minute quota: back off and retry
@@ -241,13 +263,14 @@ def run(days):
         sender = sender_of(msg["payload"].get("headers", []))
         if sender in NOT_ALERT_SENDERS:  # Indeed application confirmations / "jobs for you" digests, not job alerts
             done.add(mid)
+            state.setdefault("skipped", []).append(mid)
             continue
         for c in parse_cards(html_of(msg["payload"]), sender):
             # every alert card is kept (user choice); title_ok only marks cards that look off-target
             c["title_match"] = bool(title_ok(c["title"]))
             dropped += 0 if c["title_match"] else 1
-            m = re.search(r"/jobs/view/(\d+)", c["url"])  # tracking params differ per email; use the posting id
-            k = (m.group(1),) if m else (c["title"].lower(), c["company"].lower(), c["location"].lower())
+            k = card_key(c["url"], c["title"], c["company"] or "(see email)", c["location"])  # id: tracking params differ
+            cards_of.setdefault(mid, []).append(k)
             if k in seen:
                 continue
             seen.add(k)
@@ -256,9 +279,99 @@ def run(days):
         done.add(mid)
     (ROOT / "data").mkdir(exist_ok=True)
     jobs_path.write_text(json.dumps({"jobs": jobs}, indent=1))
-    state_path.write_text(json.dumps({"done": sorted(done)}))
+    state["done"] = sorted(done)
+    state_path.write_text(json.dumps(state))
     print(f"label messages in window: {len(ids)}, new: {len(new)}, job cards added: {added}, "
           f"off-target titles kept anyway: {dropped}, total alert jobs: {len(jobs)}")
+    return 0
+
+
+class QuotaStop(Exception):
+    pass
+
+
+def _cards_for(svc, mid, state):
+    """(card keys, is_alert_sender) for a message; re-parses the email if state has no record (older imports)."""
+    if mid in state.get("cards", {}):
+        return state["cards"][mid]
+    msg = None
+    for wait in (0.4, 15, 30, 60, 60):  # pace calls; back off on the Gmail per-minute quota
+        time.sleep(wait)
+        try:
+            msg = svc.users().messages().get(userId="me", id=mid, format="full").execute()
+            break
+        except Exception as e:  # noqa: BLE001
+            if "rateLimitExceeded" not in str(e) and "Quota exceeded" not in str(e):
+                raise
+    if msg is None:
+        raise QuotaStop()
+    sender = sender_of(msg["payload"].get("headers", []))
+    if sender in NOT_ALERT_SENDERS:
+        state.setdefault("skipped", []).append(mid)
+        return []
+    keys = [card_key(c["url"], c["title"], c["company"] or "(see email)", c["location"])
+            for c in parse_cards(html_of(msg["payload"]), sender)]
+    state.setdefault("cards", {})[mid] = keys
+    return keys
+
+
+def trash(days, dry=False):
+    """Move imported alert emails to Trash once all their jobs are on the board (or too old to be shown)."""
+    import datetime
+    svc = gmail_service()
+    lid = label_id(svc)
+    if not lid:
+        print(f'Label "{LABEL_NAME}" not found. Nothing touched.')
+        return 1
+    D = ROOT / "data"
+    state = json.loads((D / "alerts_state.json").read_text())
+    done, gone, skipped = set(state["done"]), set(state.get("trashed", [])), set(state.get("skipped", []))
+    ld = lambda n, dflt: json.loads((D / n).read_text()) if (D / n).exists() else dflt
+    key = lambda j: (j["url"], j["title"].lower().strip(), j["location"].lower().strip())
+    on_board = {key(j) for n in ("screening.json", "auto_skipped.json") for j in ld(n, {"jobs": []})["jobs"]}
+    cutoff = (datetime.date.today() - datetime.timedelta(days=MAX_AGE_DAYS)).isoformat()
+    ok_keys = set()
+    for j in ld("alert_jobs.json", {"jobs": []})["jobs"]:
+        if key(j) in on_board or (j.get("posted") or "9999")[:10] < cutoff:
+            ok_keys.add(card_key(j["url"], j["title"], j["company"], j["location"]))
+    ids, tok = [], None
+    while True:
+        r = svc.users().messages().list(userId="me", labelIds=[lid], q=f"newer_than:{days}d", maxResults=100,
+                                        pageToken=tok).execute()
+        ids += [m["id"] for m in r.get("messages", [])]
+        tok = r.get("nextPageToken")
+        if not tok:
+            break
+    n_trash = n_wait = 0
+    for mid in ids:
+        if mid not in done or mid in gone or mid in skipped:
+            continue
+        try:
+            keys = _cards_for(svc, mid, state)
+        except QuotaStop:
+            print("Gmail quota still exceeded; stopping early. Progress is saved; run again in a few minutes.")
+            break
+        if not keys or not all(k in ok_keys for k in keys):
+            n_wait += 1  # not on the board yet (still needs grading), or nothing parsed: keep the email
+            continue
+        if dry:
+            n_trash += 1
+            continue
+        for wait in (0, 15, 30, 60):
+            time.sleep(wait)
+            try:
+                labels = svc.users().messages().get(userId="me", id=mid, format="minimal").execute().get("labelIds", [])
+                if lid in labels:  # re-check the label right before touching the message
+                    svc.users().messages().trash(userId="me", id=mid).execute()
+                gone.add(mid)
+                n_trash += 1
+                break
+            except Exception as e:  # noqa: BLE001
+                if "rateLimitExceeded" not in str(e) and "Quota exceeded" not in str(e):
+                    raise
+    state["trashed"] = sorted(gone)
+    (D / "alerts_state.json").write_text(json.dumps(state))
+    print(f"{'would trash' if dry else 'moved to Trash'}: {n_trash}; kept (not on board yet / not parsed): {n_wait}")
     return 0
 
 
@@ -310,13 +423,21 @@ if __name__ == "__main__":
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--labels", action="store_true", help="list label names only; reads no mail")
     ap.add_argument("--run", action="store_true")
-    ap.add_argument("--days", type=int, default=14)
+    ap.add_argument("--days", type=int, default=None)
+    ap.add_argument("--auth", action="store_true", help="one-time browser consent; writes token.json here")
+    ap.add_argument("--trash", action="store_true", help="move fully-listed alert emails to Trash")
+    ap.add_argument("--dry", action="store_true", help="with --trash: show counts only")
     a = ap.parse_args()
+    if a.auth:
+        auth()
+        sys.exit(0)
+    if a.trash:
+        sys.exit(trash(a.days or 45, a.dry))
     if a.selftest:
         sys.exit(selftest())
     if a.labels:
         print("\n".join(sorted(l["name"] for l in gmail_service().users().labels().list(userId="me").execute()["labels"])))
         sys.exit(0)
     if a.run:
-        sys.exit(run(a.days))
+        sys.exit(run(a.days or 14))
     ap.print_help()

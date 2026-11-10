@@ -46,14 +46,18 @@ not work in the demo.
 1. Create a Gmail label (e.g. "Job Alerts") and a filter that labels only your alert senders
    (`jobalerts-noreply@linkedin.com`, `donotreply@jobalert.indeed.com`).
 2. `pip install google-api-python-client google-auth-oauthlib`, put a Google OAuth `credentials.json` in this folder (git-ignored), then `python3 alerts.py --selftest`
-   and `python3 alerts.py --run --days 30`. Scope is `gmail.readonly`, restricted to that label.
+   and `python3 alerts.py --run --days 30`. Run `python3 alerts.py --auth` once (scope `gmail.modify`, own `token.json`).
+   `--run` reads; `--trash` later moves an email to Trash only after all its jobs are on the board.
 3. `python3 fetch.py` and `python3 prefilter.py`, then screen the shortlist and merge with `merge_screening.py`.
+3b. Daily automation: `run_daily.sh` (cron) imports alerts, grades new jobs with a headless Claude run
+   (`grade_daily.py`: fast model, 40 jobs/day cap, spend cap per batch), then trashes fully-listed alert emails.
 4. `python3 server.py 5100`. The server binds to localhost only; expose it privately (for example with
    Tailscale) if you want it on your phone.
 
 ## Safety choices
 
-- **Read-only mail access**, one label only. Nothing is sent or deleted.
+- **One label only.** Mail is read, and alert emails are moved to Trash (recoverable for 30 days, never permanently
+  deleted) only after their jobs are on the board. Nothing is sent. Unparseable mail is left alone.
 - **No auto-apply** and no scraping of LinkedIn pages; alert emails and public APIs only.
 - Mutating endpoints need a custom header and a same-host origin, run one job at a time, and have a daily cap.
 - Private files are git-ignored: `credentials.json`, `token.json`, `master.yaml`, `data/`.

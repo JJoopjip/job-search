@@ -237,11 +237,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
         d = load("screening.json", {"jobs": [], "generated": None})
         gen = generated()
         live = {(j["url"], j["title"].lower()) for j in load("jobs.json", {"jobs": []}).get("jobs", [])}
-        hidden = {"older": 0, "closed": 0}
+        hidden = {"older": 0, "closed": 0, "removed": 0}
         keep = []
         decisions = load("decisions.json", {})
         for j in d.get("jobs", []):
             dec = decisions.get(jid(j["url"], j["title"]))
+            if dec and dec.get("status") == "removed":  # you removed it: gone from every tab (undo = delete the entry)
+                hidden["removed"] = hidden.get("removed", 0) + 1
+                continue
             if j.get("eligibility") == "blocked" and not dec:
                 j["excluded"] = True  # hard blocker: shown only under the Excluded tab
             if dec:  # jobs you marked stay visible in their tab regardless of age or being taken down
@@ -292,13 +295,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
         fp = (RESUME_OUT / g["slug"] / fname).resolve()
         if RESUME_OUT not in fp.parents or not fp.is_file():
             return self._send(404, b"not found", "text/plain")
-        view = fname.endswith(".pdf")
+        view = fname.endswith(".pdf") and q.get("dl") != "1"
         self._send(200, fp.read_bytes(), FILES[fname], {
             "Content-Disposition": f'{"inline" if view else "attachment"}; filename="{g["slug"]}-{fname}"'})
 
     def _api_mark(self, q):
         i, st = q.get("id", ""), q.get("status", "")
-        if not (ID_RE.match(i) and find_job(i)) or st not in ("interested", "applied", "archived", "none"):
+        if not (ID_RE.match(i) and find_job(i)) or st not in ("interested", "applied", "archived", "removed", "none"):
             return self._json(400, {"error": "bad request"})
         with _lock:
             dec = load("decisions.json", {})

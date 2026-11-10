@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cat peeking over a briefcase">
+  <rect width="64" height="64" rx="16" fill="#1f6f5c"/>
+  <path d="M15 31 L17 11 L30 22 Z" fill="#fff3df"/>
+  <path d="M49 31 L47 11 L34 22 Z" fill="#fff3df"/>
+  <path d="M19 25 L19.6 16.5 L26.5 21.8 Z" fill="#f4a9b0"/>
+  <path d="M45 25 L44.4 16.5 L37.5 21.8 Z" fill="#f4a9b0"/>
+  <ellipse cx="32" cy="33" rx="18" ry="14.5" fill="#fff3df"/>
+  <circle cx="25" cy="31.5" r="2.4" fill="#1d2320"/>
+  <circle cx="39" cy="31.5" r="2.4" fill="#1d2320"/>
+  <circle cx="25.8" cy="30.6" r=".8" fill="#fff"/>
+  <circle cx="39.8" cy="30.6" r=".8" fill="#fff"/>
+  <circle cx="20.5" cy="37" r="2.8" fill="#f4a9b0" opacity=".65"/>
+  <circle cx="43.5" cy="37" r="2.8" fill="#f4a9b0" opacity=".65"/>
+  <path d="M30 35.6 h4 l-2 2.5 z" fill="#f08a9a"/>
+  <path d="M32 38.2 q-2.4 3 -5 1.2 M32 38.2 q2.4 3 5 1.2" stroke="#1d2320" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <path d="M26 46 v-3 a3 3 0 0 1 3 -3 h6 a3 3 0 0 1 3 3 v3" stroke="#c9822b" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <rect x="9" y="45" width="46" height="14" rx="4.5" fill="#f0b04f"/>
+  <rect x="9" y="50" width="46" height="2" fill="#c9822b"/>
+  <rect x="29" y="47.5" width="6" height="6.5" rx="1.6" fill="#fff3df" stroke="#c9822b" stroke-width="1.2"/>
+  <ellipse cx="22.5" cy="45.3" rx="3.6" ry="2.4" fill="#fff3df"/>
+  <ellipse cx="41.5" cy="45.3" rx="3.6" ry="2.4" fill="#fff3df"/>
+</svg>
