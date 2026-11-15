@@ -37,7 +37,7 @@ def main():
     if scr_path.exists():
         screened = {key(j) for j in json.loads(scr_path.read_text()).get("jobs", [])}
 
-    # Indeed alert cards with off-target titles are auto-skipped (data/auto_skipped.json): never re-shortlisted
+    # data/auto_skipped.json is legacy (now emptied): every alert card gets graded
     auto = ROOT / "data/auto_skipped.json"
     if auto.exists():
         screened |= {key(j) for j in json.loads(auto.read_text()).get("jobs", [])}
@@ -73,6 +73,7 @@ def main():
     other = [j for j in other if STRONG_OTHER.search(j["title"]) and (not j.get("seniority") or "Mid-level" in j["seniority"])]
     other.sort(key=rank)
     stats["other_over_cap"] = max(0, len(other) - a.other_cap)
+    alert_jobs.sort(key=lambda j: j.get("posted") or "", reverse=True)  # newest alert cards are graded first
     short = alert_jobs + (health + other[:a.other_cap])[:a.cap]
     (ROOT / "data/shortlist.json").write_text(json.dumps({"stats": stats, "jobs": short}, indent=1))
     print(stats, "-> shortlist:", len(short), f"(alert cards {len(alert_jobs)}, other {len(short) - len(alert_jobs)})")

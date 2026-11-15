@@ -5,6 +5,7 @@ token.json
 
 # Real career file (private). Only master.example.yaml (fictional) is tracked.
 /master.yaml
+/RUBRIC.private.md
 
 # All runtime data: alert-email jobs, screening results, decisions, generated-resume index
 data/

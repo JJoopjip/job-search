@@ -233,7 +233,7 @@ def run(days):
                                         pageToken=tok).execute()
         ids += [m["id"] for m in r.get("messages", [])]
         tok = r.get("nextPageToken")
-        if not tok or len(ids) >= 300:
+        if not tok or len(ids) >= 1000:
             break
     new = [i for i in ids if i not in done]
     jobs_path = ROOT / "data" / "alert_jobs.json"
