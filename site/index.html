@@ -60,6 +60,7 @@ button{font:inherit;color:inherit}
 .apply{background:var(--apply-bg);color:var(--apply)}.stretch{background:var(--stretch-bg);color:var(--stretch)}.skip{background:var(--skip-bg);color:var(--skip)}
 .meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;font-size:.82rem;color:var(--mute);align-items:center}
 .meta span{border:1px solid var(--line);border-radius:6px;padding:1px 8px}
+.pr{font-weight:700}.pr.likely{background:var(--apply-bg);color:var(--apply)}.pr.unlikely{background:var(--block-bg);color:var(--block)}.pr.unclear{background:var(--skip-bg);color:var(--skip)}
 .age{font-weight:700;border:0!important;border-radius:999px!important;padding:2px 10px!important}
 .age.a0{background:var(--age0-bg);color:var(--age0)}.age.a1{background:var(--age1-bg);color:var(--age1)}
 .age.a2{background:var(--age2-bg);color:var(--age2)}.age.a3,.age.a9{background:var(--age3-bg);color:var(--age3)}
@@ -114,8 +115,11 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
   .bar{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 0;margin-top:6px}
   .bar .btn{flex:none}
   .bar .count{flex:1;text-align:right}
-  .side{position:fixed;top:0;left:0;bottom:0;width:min(86vw,320px);max-height:none;border-radius:0 14px 14px 0;z-index:21;transform:translateX(-105%);transition:transform .2s;box-shadow:var(--shadow)}
+  .bar .sort{flex:1;min-width:0;justify-content:flex-end}.bar .sort select{min-width:0;max-width:100%}
+  .listhead .sort{display:none}
+  .side{position:fixed;top:0;left:0;bottom:0;height:100vh;height:100dvh;width:min(86vw,320px);max-height:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));border-radius:0 14px 14px 0;z-index:21;transform:translateX(-105%);transition:transform .2s;box-shadow:var(--shadow)}
   body.drawer .side{transform:none}
+  body.drawer{overflow:hidden}
   body.drawer .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
   .listhead .count{display:none}
   .mark button.rm{margin-left:0}
@@ -138,11 +142,11 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
     </div>
     <nav class="tools" aria-label="Other tools"><a id="lnk-resume" href="#">Resume generator</a><a id="lnk-tracker" href="#">Application tracker</a></nav>
 
-    <div class="bar"><button type="button" class="btn" id="open-filters">☰ Filters<span id="fcount"></span></button><span class="count" id="count2"></span></div>
+    <div class="bar"><button type="button" class="btn" id="open-filters">☰ Filters<span id="fcount"></span></button><label class="sort" id="barsort">Sorted <select id="sort2"><option value="match">Best match</option><option value="new">Newest posted</option><option value="old">Oldest posted</option><option value="grade">Grade (A to F)</option></select></label><span class="count" id="count2"></span></div>
 
     <div class="listhead">
       <span class="count" id="count"></span>
-      <label class="sort">Sort <select id="sort"><option value="match">Best match first</option><option value="new">Newest posted first</option><option value="old">Oldest posted first</option></select></label>
+      <label class="sort">Sort <select id="sort"><option value="match">Best match</option><option value="new">Newest posted</option><option value="old">Oldest posted</option><option value="grade">Grade (A to F)</option></select></label>
     </div>
     <div id="list"></div>
     <footer>Screened against your master resume. Drafts only: you review and submit every application yourself. Check eligibility on the posting before applying. Some listings come from <a href="https://himalayas.app" target="_blank" rel="noopener noreferrer">Himalayas</a>, and their links lead to the employer's page there.</footer>
@@ -166,8 +170,8 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
 })();
 (function(){
   var base = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
-  var DEF = {view:'review', age:'all', src:'all', grade:'all', market:'all', verdict:'all'};
-  var state = Object.assign({}, DEF, {sort:'match'});
+  var DEF = {view:'review', age:'all', src:[], grade:[], market:[], verdict:[]};
+  var state = Object.assign({}, DEF, {src:[],grade:[],market:[],verdict:[],sort:'match'});
   var SRC = {linkedin:'LinkedIn', indeed:'Indeed', jobsdb:'JobsDB', himalayas:'Himalayas', company:'Company site'};
   var AGES = [['all','Any time',null],['0','Today',0],['3','Within 3 days',3],['7','Within a week',7],['14','Within 2 weeks',14],['21','Within 3 weeks',21],['30','Within 30 days',30]];
   var data = {jobs:[]};
@@ -197,24 +201,30 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
       if(!(v==='excluded' ? !!j.excluded : j.excluded ? false : v==='all' ? true : v==='review' ? !dec : dec===v)) return false;
     }
     if(skip!=='age' && state.age!=='all'){ var d=ageDays(j); if(d===null || d>+state.age) return false; }
-    if(skip!=='src' && state.src!=='all' && j.src!==state.src) return false;
-    if(skip!=='market' && state.market!=='all' && j.market!==state.market) return false;
-    if(skip!=='grade' && state.grade!=='all' && gradeOf(j)!==state.grade) return false;
-    if(skip!=='verdict' && state.verdict!=='all' && j.verdict!==state.verdict) return false;
+    if(skip!=='src' && state.src.length && state.src.indexOf(j.src)<0) return false;
+    if(skip!=='market' && state.market.length && state.market.indexOf(j.market)<0) return false;
+    if(skip!=='grade' && state.grade.length && state.grade.indexOf(gradeOf(j))<0) return false;
+    if(skip!=='verdict' && state.verdict.length && state.verdict.indexOf(j.verdict)<0) return false;
     return true;
   }
   function count(skip, test){return data.jobs.filter(function(j){return matches(j,skip) && test(j);}).length;}
-  function activeFilters(){return ['age','src','grade','market','verdict'].filter(function(k){return state[k]!==DEF[k];}).length + (state.view!==DEF.view?1:0);}
+  function activeFilters(){return (state.age!==DEF.age?1:0) + ['src','grade','market','verdict'].reduce(function(a,k){return a+state[k].length;},0) + (state.view!==DEF.view?1:0);}
 
   function buildFilters(){
     var f = $('filters'); f.textContent='';
     function section(title, key, opts, hint){
-      var d = el('details','sec'); d.open = true; d.appendChild(el('summary',null,title));
+      var multi = Array.isArray(state[key]);
+      var d = el('details','sec'); d.open = true; d.appendChild(el('summary',null,title+(Array.isArray(state[key])?' (pick several)':'')));
       opts.forEach(function(o){
-        var b = el('button','opt'); b.type='button'; b.setAttribute('aria-pressed', state[key]===o[0]);
+        var b = el('button','opt'); b.type='button'; b.setAttribute('aria-pressed', multi ? (o[0]==='all' ? state[key].length===0 : state[key].indexOf(o[0])>=0) : state[key]===o[0]);
         if(o[3]!==undefined){ b.appendChild(el('span','dot d'+o[3])); }
         b.appendChild(el('span',null,o[1])); b.appendChild(el('span','n', String(o[2])));
-        b.onclick=function(){state[key]=o[0]; closeDrawer(); refresh();}; d.appendChild(b);
+        b.onclick=function(){
+          if(multi){ var a=state[key], i=a.indexOf(o[0]);
+            if(o[0]==='all') state[key]=[]; else if(i>=0) a.splice(i,1); else a.push(o[0]);
+            refresh();
+          } else { state[key]=o[0]; closeDrawer(); refresh(); }
+        }; d.appendChild(b);
       });
       if(hint) d.appendChild(el('p','hint',hint));
       f.appendChild(d);
@@ -240,8 +250,8 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
   function openDrawer(){document.body.classList.add('drawer');}
   function closeDrawer(){document.body.classList.remove('drawer');}
   $('open-filters').onclick = openDrawer; $('scrim').onclick = closeDrawer;
-  $('reset').onclick = function(){state = Object.assign({}, DEF, {sort:state.sort}); closeDrawer(); refresh();};
-  $('sort').onchange = function(){state.sort=this.value; render();};
+  $('reset').onclick = function(){state = Object.assign({}, DEF, {src:[],grade:[],market:[],verdict:[],sort:state.sort}); closeDrawer(); refresh();};
+  ['sort','sort2'].forEach(function(id){ $(id).onchange = function(){state.sort=this.value; $('sort').value=$('sort2').value=state.sort; render();}; });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeDrawer(); closePanel(); } });
 
   /* ---------- run tracking ---------- */
@@ -400,14 +410,18 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
   function render(){
     var list = $('list'); list.textContent='';
     var jobs = data.jobs.filter(function(j){return matches(j);});
-    if(state.sort!=='match'){
-      var asc = state.sort==='new';  // unknown dates always last
-      jobs = jobs.slice().sort(function(x,y){
-        var dx=ageDays(x), dy=ageDays(y);
-        if(dx===null||dy===null) return (dx===null)-(dy===null);
-        return asc ? dx-dy : dy-dx;
-      });
-    }
+    var V = {apply:0, stretch:1, skip:2};
+    function gRank(j){var g=String(j.grade||'').toUpperCase(), L='ABCDEF'.indexOf(g.charAt(0)); if(L<0) return 99; return L*3 + (g.charAt(1)==='+'?0:g.charAt(1)==='-'?2:1);}
+    function vRank(j){return V[j.verdict]===undefined ? 3 : V[j.verdict];}
+    function dRank(j,newest){var d=ageDays(j); return d===null ? 9999 : newest ? d : -d;}  // unknown dates last (oldest: also last)
+    function cmp(a,b){for(var i=0;i<a.length;i++){ if(a[i]!==b[i]) return a[i]-b[i]; } return 0;}
+    var keys = {
+      match: function(j){return [vRank(j), gRank(j), dRank(j,true)];},
+      grade: function(j){return [gRank(j), dRank(j,true), vRank(j)];},
+      new:   function(j){return [dRank(j,true), gRank(j), vRank(j)];},
+      old:   function(j){var d=ageDays(j); return [d===null?1:0, -(d||0), gRank(j), vRank(j)];}
+    }[state.sort];
+    jobs = jobs.map(function(j){return {j:j,k:keys(j)};}).sort(function(x,y){return cmp(x.k,y.k);}).map(function(o){return o.j;});
     var txt = jobs.length+' of '+data.jobs.length+' jobs'; $('count').textContent = txt; $('count2').textContent = txt;
     if(!jobs.length){list.appendChild(el('p','empty','No jobs match these filters.')); return;}
     jobs.forEach(function(j){
@@ -421,6 +435,7 @@ footer{color:var(--mute);font-size:.8rem;margin:24px 0}
 
       var meta = el('div','meta'), ad = ageDays(j);
       var ab = el('span','age a'+ageBand(ad), ageText(ad)); if(j.posted) ab.title = j.posted; meta.appendChild(ab);
+      if(j.pr_fit){ var pf = el('span','pr '+j.pr_fit, 'PR-fit: '+j.pr_fit); if(j.pr_reason) pf.title = j.pr_reason; meta.appendChild(pf); }
       if(j.src){ var st = el('span','srctag', SRC[j.src]||j.src); st.setAttribute('data-src', j.src); meta.appendChild(st); }
       [j.market, j.title_only && 'title only', j.open_status==='listed' && 'still listed', j.open_status==='unverified' && 'open? check posting', j.profile && ('profile: '+j.profile), j.tailor_with && ('tailor: '+j.tailor_with)]
         .filter(Boolean).forEach(function(t){meta.appendChild(el('span',null,t));});
