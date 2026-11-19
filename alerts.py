@@ -328,7 +328,7 @@ def trash(days, dry=False):
     done, gone, skipped = set(state["done"]), set(state.get("trashed", [])), set(state.get("skipped", []))
     ld = lambda n, dflt: json.loads((D / n).read_text()) if (D / n).exists() else dflt
     key = lambda j: (j["url"], j["title"].lower().strip(), j["location"].lower().strip())
-    on_board = {key(j) for n in ("screening.json", "auto_skipped.json") for j in ld(n, {"jobs": []})["jobs"]}
+    on_board = {key(j) for n in ("screening.json", "auto_skipped.json", "low_grades.json") for j in ld(n, {"jobs": []})["jobs"]}
     cutoff = (datetime.date.today() - datetime.timedelta(days=MAX_AGE_DAYS)).isoformat()
     ok_keys = set()
     for j in ld("alert_jobs.json", {"jobs": []})["jobs"]:

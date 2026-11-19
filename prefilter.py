@@ -38,9 +38,10 @@ def main():
         screened = {key(j) for j in json.loads(scr_path.read_text()).get("jobs", [])}
 
     # data/auto_skipped.json is legacy (now emptied): every alert card gets graded
-    auto = ROOT / "data/auto_skipped.json"
-    if auto.exists():
-        screened |= {key(j) for j in json.loads(auto.read_text()).get("jobs", [])}
+    for name in ("auto_skipped.json", "low_grades.json"):  # low_grades.json: graded below C, kept only so they are not graded twice
+        f = ROOT / "data" / name
+        if f.exists():
+            screened |= {key(j) for j in json.loads(f.read_text()).get("jobs", [])}
 
     stats = {"total": len(jobs), "already_screened": 0, "senior": 0, "duplicate": 0, "other_over_cap": 0}
     health, other, seen, alert_jobs = [], [], set(), []
