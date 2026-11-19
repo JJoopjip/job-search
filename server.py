@@ -47,6 +47,9 @@ _runs = {}                        # run id -> status dict (in memory)
 _busy = {"run": None}
 
 
+GRADE_ORDER = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C"]  # shown on the board; anything lower (C-, D, E, F) is hidden
+
+
 def jid(url, title):
     return hashlib.sha1((url + "\n" + title.lower().strip()).encode()).hexdigest()[:16]
 
@@ -66,16 +69,29 @@ def find_job(i):
     return next((j for j in screened() if jid(j["url"], j["title"]) == i), None)
 
 
+_jd_cache = {"key": None, "found": {}, "jobs": {}}
+
+
+def _jd_sources():
+    """jd_found.json + jobs.json indexed once; reloaded only when either file changes."""
+    key = tuple((DATA / n).stat().st_mtime_ns if (DATA / n).exists() else 0 for n in ("jd_found.json", "jobs.json"))
+    if _jd_cache["key"] != key:
+        idx = {}
+        for j in load("jobs.json", {"jobs": []}).get("jobs", []):
+            if not j.get("desc_truncated") and len(j.get("desc", "")) > 400:
+                idx.setdefault((j["url"], j["title"].lower()), j["desc"])
+        _jd_cache.update(key=key, found=load("jd_found.json", {}).get("found", {}), jobs=idx)
+    return _jd_cache["found"], _jd_cache["jobs"]
+
+
 def jd_for(job):
     """Full description text for a screened job, or ('', '') if we only have an alert snippet."""
-    found = load("jd_found.json", {}).get("found", {}).get(job["url"])
+    found_all, idx = _jd_sources()
+    found = found_all.get(job["url"])
     if found and len(found.get("text", "")) > 200:
         return found["text"], found.get("source_url", "")
-    for j in load("jobs.json", {"jobs": []}).get("jobs", []):
-        if j["url"] == job["url"] and j["title"].lower() == job["title"].lower() and \
-                not j.get("desc_truncated") and len(j.get("desc", "")) > 400:
-            return j["desc"], j["url"]
-    return "", ""
+    desc = idx.get((job["url"], job["title"].lower()))
+    return (desc, job["url"]) if desc else ("", "")
 
 
 def generated():
@@ -252,6 +268,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 j["open_status"] = "unverified" if "alert" in str(j.get("via", "")) else (
                     "listed" if (j["url"], j["title"].lower()) in live else "closed")
                 keep.append(j)
+                continue
+            if str(j.get("grade", "")).strip() not in GRADE_ORDER:
+                hidden["low"] = hidden.get("low", 0) + 1
                 continue
             try:
                 age = (time.time() - time.mktime(time.strptime((j.get("posted") or "")[:10], "%Y-%m-%d"))) / 86400
